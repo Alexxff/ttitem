@@ -4,19 +4,19 @@
         <div class=title>
             <img src="../../assets/img/logo_index.png" alt="">
         </div>
-        <el-form>
-            <el-form-item>
-                <el-input placeholder="请输入手机号"></el-input>
+        <el-form :model="ruleForm" :rules="rule" ref="loginForm">
+            <el-form-item prop="mobile">
+                <el-input v-model="ruleForm.mobile" placeholder="请输入手机号"></el-input>
             </el-form-item>
-            <el-form-item>
-                <el-input style="width:65%" placeholder="请输入验证码"></el-input>
+            <el-form-item prop="code">
+                <el-input v-model="ruleForm.code" style="width:65%" placeholder="请输入验证码"></el-input>
                 <el-button style="float:right">发送验证码</el-button>
             </el-form-item>
-            <el-form-item>
-                <el-checkbox>我已阅读并同意用户协议和隐私条款</el-checkbox>
+            <el-form-item prop="check">
+                <el-checkbox v-model="ruleForm.check">我已阅读并同意用户协议和隐私条款</el-checkbox>
             </el-form-item>
             <el-form-item>
-                <el-button style="width:100%" type="primary">登录</el-button>
+                <el-button @click="login" style="width:100%" type="primary">登录</el-button>
             </el-form-item>
         </el-form>
     </el-card>
@@ -25,7 +25,45 @@
 
 <script>
 export default {
-
+  data () {
+    var func = function (rule, value, callback) {
+      if (value) {
+        callback()
+      } else {
+        callback(new Error('您必须同意'))
+      }
+    }
+    return {
+      ruleForm: {
+        mobile: '',
+        code: '',
+        check: false
+      },
+      rule: {
+        mobile: [
+          { required: true, message: '手机号不能为空', trigger: 'blur' },
+          { pattern: /^1[3456789]\d{9}$/, message: '手机号格式错误' }
+        ],
+        code: [
+          { required: true, message: '验证码不能为空', trigger: 'blur' },
+          { pattern: /^\d{6}$/, message: '验证码必须为6位' }
+        ],
+        check: [
+          {
+            // message: '您必须无条件被坑'
+            validator: func
+          }
+        ]
+      }
+    }
+  },
+  methods: {
+    login () {
+      this.$refs.loginForm.validate(isOk => {
+        console.log('验证成功')
+      })
+    }
+  }
 }
 </script>
 
