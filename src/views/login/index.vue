@@ -60,7 +60,16 @@ export default {
   methods: {
     login () {
       this.$refs.loginForm.validate(isOk => {
-        console.log('验证成功')
+        // console.log('验证成功')
+        this.$axios({
+          method: 'post',
+          url: '/authorizations',
+          data: this.ruleForm
+        }).then(result => {
+          // console.log(result.data.data)
+          window.localStorage.setItem('user-info', JSON.stringify(result.data.data))
+          this.$router.push('/home')
+        })
       })
     }
   }
