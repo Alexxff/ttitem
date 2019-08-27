@@ -69,7 +69,15 @@ export default {
           // console.log(result.data.data)
           window.localStorage.setItem('user-info', JSON.stringify(result.data.data))
           this.$router.push('/home')
+        }).catch(() => {
+          this.$message({
+            message: '当前用户名或者密码错误',
+            type: 'waring'
+          })
         })
+        // .catch((error) => {
+        //   console.log(error)
+        // })
       })
     }
   }
