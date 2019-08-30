@@ -31,15 +31,12 @@ export default {
   },
   methods: {
     getUserInfo () {
-      let userInfo = window.localStorage.getItem('user-info')
-      let token = userInfo ? JSON.parse(userInfo).token : null
-      console.log(token)
-      token && this.$axios({
-        url: '/user/profile',
-        headers: { 'Authorization': `Bearer ${token}` }
+      // console.log(token)
+      this.$axios({
+        url: '/user/profile'
       }).then(result => {
         this.user = result.data.data
-        console.log(result.data.data)
+        // console.log(result.data.data)
       })
     },
     commandAction (command) {
@@ -54,7 +51,7 @@ export default {
     }
   },
   created () {
-    console.log(1)
+    // console.log(1)
     this.getUserInfo()
   }
 }

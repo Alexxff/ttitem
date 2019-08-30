@@ -30,7 +30,7 @@ export default {
       if (value) {
         callback()
       } else {
-        callback(new Error('您必须同意'))
+        return callback(new Error('您必须同意'))
       }
     }
     return {
@@ -60,26 +60,35 @@ export default {
   methods: {
     login () {
       this.$refs.loginForm.validate(isOk => {
-        // console.log('验证成功')
-        this.$axios({
-          method: 'post',
-          url: '/authorizations',
-          data: this.ruleForm
-        }).then(result => {
+        if (isOk) {
+          this.$axios({
+            method: 'post',
+            url: '/authorizations',
+            data: this.ruleForm
+          }).then(result => {
           // console.log(result.data.data)
-          window.localStorage.setItem('user-info', JSON.stringify(result.data.data))
-          this.$router.push('/home')
-        }).catch(() => {
-          this.$message({
-            message: '当前用户名或者密码错误',
-            type: 'waring'
+            window.localStorage.setItem('user-info', JSON.stringify(result.data.data))
+            this.$router.push('/home')
+          }).catch(() => {
+            this.$message({
+              message: '当前用户名或者密码错误',
+              type: 'waring'
+            })
           })
-        })
+        }
+        // console.log('验证成功')
+
         // .catch((error) => {
         //   console.log(error)
         // })
       })
+    },
+    get () {
+      console.log(JSON.parse(window.localStorage.getItem('usr-info')))
     }
+  },
+  created () {
+    this.get()
   }
 }
 </script>
