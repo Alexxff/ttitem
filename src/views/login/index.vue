@@ -35,9 +35,9 @@ export default {
     }
     return {
       ruleForm: {
-        mobile: '',
-        code: '',
-        check: false
+        mobile: '13911111111',
+        code: '246810',
+        check: true
       },
       rule: {
         mobile: [
@@ -65,9 +65,10 @@ export default {
             method: 'post',
             url: '/authorizations',
             data: this.ruleForm
-          }).then(result => {
-          // console.log(result.data.data)
-            window.localStorage.setItem('user-info', JSON.stringify(result.data.data))
+          }).then((result) => {
+            // console.log(data)
+            // console.log(result.data)
+            window.localStorage.setItem('user-info', JSON.stringify(result.data))
             this.$router.push('/home')
           }).catch(() => {
             this.$message({
