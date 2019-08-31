@@ -19,10 +19,15 @@ export default new Router({
     path: '/home',
     name: 'home',
     component: Home,
-    children: [{
-      path: '',
-      component: Main
-    }]
+    children: [
+      {
+        path: '',
+        component: Main
+      }, {
+        path: '/home/material',
+        component: () => import('./views/comment')
+      }
+    ]
   }
     // {
     //   path: '/about',
