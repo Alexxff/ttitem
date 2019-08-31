@@ -41,6 +41,6 @@ axios.interceptors.response.use(function (response) {
       break
   }
   Message({ message: message, type: 'warning' })
-  return Promise.reject(error)
+  return new Promise(function () {})
 })
 export default axios
