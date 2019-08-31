@@ -1,10 +1,10 @@
 <template>
-  <el-card>
+  <el-card v-loading="loading">
     <bread-crumb slot="header">
       <template slot="title">评论列表</template>
     </bread-crumb>
     <!--表格组件-->
-    <el-table :data="list" stripe>
+    <el-table :data="list" stripe >
       <el-table-column prop="title" width="500" label="标题"></el-table-column>
       <el-table-column :formatter="formatter" prop="comment_status" label="评论状态"></el-table-column>
       <el-table-column prop="total_comment_count" label="总评论数"></el-table-column>
@@ -35,7 +35,8 @@ export default {
         pageSize: 10,
         total: 0,
         currentPage: 1
-      }
+      },
+      loading: false
     }
   },
   methods: {
@@ -58,6 +59,7 @@ export default {
     },
     // 查询列表,查询数据
     getComments () {
+      this.loading = true
       let pageParams = {
         page: this.page.currentPage,
         per_page: this.page.pageSize
@@ -72,6 +74,7 @@ export default {
       }).then(result => {
         this.list = result.data.results
         this.page.total = result.data.total_count
+        this.loading = false
       })
     },
     formatter (rom, column, cellValue, index) {
