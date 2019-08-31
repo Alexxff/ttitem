@@ -1,5 +1,5 @@
 <template>
-  <div class="home"></div>
+  <div class="homes"></div>
 </template>
 
 <script>
@@ -9,7 +9,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.home{
+.homes{
     background-image: url('../../assets/img/home.jpg');
     background-size: cover;
     width: 100%;
