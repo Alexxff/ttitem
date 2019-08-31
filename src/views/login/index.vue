@@ -35,9 +35,9 @@ export default {
     }
     return {
       ruleForm: {
-        mobile: '13911111111',
-        code: '246810',
-        check: true
+        mobile: '',
+        code: '',
+        check: false
       },
       rule: {
         mobile: [
@@ -70,12 +70,13 @@ export default {
             // console.log(result.data)
             window.localStorage.setItem('user-info', JSON.stringify(result.data))
             this.$router.push('/home')
-          }).catch(() => {
-            this.$message({
-              message: '当前用户名或者密码错误',
-              type: 'waring'
-            })
           })
+          // .catch(() => {
+          //   this.$message({
+          //     message: '当前用户名或者密码错误',
+          //     type: 'waring'
+          //   })
+          // })
         }
         // console.log('验证成功')
 
