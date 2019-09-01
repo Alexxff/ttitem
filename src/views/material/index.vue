@@ -3,6 +3,9 @@
     <bread-crumb sot=":header">
       <template slot="title">素材管理</template>
     </bread-crumb>
+    <el-upload action='' :http-request="uploadImg" class="upload-material" :show-file-list="false">
+      <el-button type='primary'>上传图片</el-button>
+    </el-upload>
     <el-tabs v-model="activeName" @tab-click="changeTab">
       <el-tab-pane label="全部图片" name="all">
         <div class="img-list">
@@ -22,8 +25,7 @@
             :page-size="page.pageSize"
             :total="page.total"
             @current-change="changePage"
-            background
-            layout="prev, pager, next"
+            background layout="prev, pager, next"
           ></el-pagination>
         </el-row>
       </el-tab-pane>
@@ -62,6 +64,18 @@ export default {
     }
   },
   methods: {
+    uploadImg (params) {
+      // console.log(params)
+      let formData = new FormData()
+      formData.append('image', params.file)
+      this.$axios({
+        method: 'post',
+        url: '/user/images',
+        data: formData
+      }).then(result => {
+        this.getMaterial()
+      })
+    },
     collectOrCancel (item) {
       let mess = item.is_collected ? '取消收藏' : '收藏'
       this.$confirm(`您是否要${mess}此图片?`, '提示').then(() => {
@@ -115,6 +129,11 @@ export default {
 </script>
 
 <style lang='less' scoped>
+.upload-material{
+  position:absolute;
+  right:20px;
+  margin-top:-10px;
+}
 .img-list {
   display: flex;
   justify-content: space-around;
