@@ -9,26 +9,40 @@
           <el-card class="img-card" v-for="item in list" :key="item.id">
             <img :src="item.url" alt />
             <el-row align="middle" class="operate" type="flex" justify="space-around">
-              <i class="el-icon-star-on"></i>
-              <i class="el-icon-delete-solid"></i>
+              <!-- 取消或收藏 -->
+              <i :style="{color:item.is_collected?'red':''}" @click="collectOrCancel(item)" class="el-icon-star-on"></i>
+              <!-- 删除素材 -->
+              <i @click="delMaterial(item)" class="el-icon-delete-solid"></i>
             </el-row>
           </el-card>
-
         </div>
-            <el-row type='flex' justify='center'>
-            <el-pagination :current-page="page.currentPage" :page-size="page.pageSize" :total="page.total" @current-change="changePage" background layout="prev, pager, next"></el-pagination>
-          </el-row>
+        <el-row type="flex" justify="center">
+          <el-pagination
+            :current-page="page.currentPage"
+            :page-size="page.pageSize"
+            :total="page.total"
+            @current-change="changePage"
+            background
+            layout="prev, pager, next"
+          ></el-pagination>
+        </el-row>
       </el-tab-pane>
       <el-tab-pane label="收藏图片" name="collect">
         <div class="img-list">
           <el-card class="img-card" v-for="item in list" :key="item.id">
             <img :src="item.url" alt />
           </el-card>
-
         </div>
-        <el-row type='flex' justify='center'>
-            <el-pagination :current-page="page.currentPage" :page-size="page.pageSize" :total="page.total" @current-change="changePage" background layout="prev, pager, next"></el-pagination>
-          </el-row>
+        <el-row type="flex" justify="center">
+          <el-pagination
+            :current-page="page.currentPage"
+            :page-size="page.pageSize"
+            :total="page.total"
+            @current-change="changePage"
+            background
+            layout="prev, pager, next"
+          ></el-pagination>
+        </el-row>
       </el-tab-pane>
     </el-tabs>
   </el-card>
@@ -48,6 +62,29 @@ export default {
     }
   },
   methods: {
+    collectOrCancel (item) {
+      let mess = item.is_collected ? '取消收藏' : '收藏'
+      this.$confirm(`您是否要${mess}此图片?`, '提示').then(() => {
+        this.$axios({
+          method: 'put',
+          url: `/user/images/${item.id}`,
+          data: { collect: !item.is_collected }
+        }).then(result => {
+          this.getMaterial()
+        })
+      })
+    },
+    delMaterial (item) {
+      this.$confirm('您确定删除此图片吗', '提示').then(() => {
+        this.$axios({
+          method: 'delete',
+          url: `/user/images/${item.id}`
+        }).then(result => {
+          // this.page.currentPage = 1
+          this.getMaterial()
+        })
+      })
+    },
     changePage (newPage) {
       this.page.currentPage = newPage
       this.getMaterial()
